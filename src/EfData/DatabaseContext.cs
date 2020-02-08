@@ -1,6 +1,7 @@
 ﻿using System;
 using Hdd.EfData.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Hdd.EfData
 {
@@ -39,6 +40,27 @@ namespace Hdd.EfData
             modelBuilder.Entity<Measurement>().Property(measurement => measurement.Instance).IsRequired();
             modelBuilder.Entity<Measurement>().Property(measurement => measurement.Actual).IsRequired();
             modelBuilder.Entity<Measurement>().Property(measurement => measurement.Nominal).IsRequired();
+
+            ConvertDateTimeFieldsToUtcTicks(modelBuilder);
+        }
+
+        private static void ConvertDateTimeFieldsToUtcTicks(ModelBuilder modelBuilder)
+        {
+            var dateTimeConverter =
+                new ValueConverter<DateTime, long>(
+                    dateTime => DateTime.SpecifyKind(dateTime, DateTimeKind.Utc).Ticks,
+                    dateTime => new DateTime(dateTime, DateTimeKind.Utc));
+
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                foreach (var property in entityType.GetProperties())
+                {
+                    if (property.ClrType == typeof(DateTime) || property.ClrType == typeof(DateTime?))
+                    {
+                        property.SetValueConverter(dateTimeConverter);
+                    }
+                }
+            }
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)

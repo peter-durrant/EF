@@ -50,5 +50,14 @@ namespace Hdd.EfData.Test
                 Assert.AreEqual(5267, context.Measurements.Count());
             }
         }
+
+        [Test]
+        public void DatabaseContext_BoundedMeasurements_HasExpectedCount()
+        {
+            using (var context = new DatabaseContext(_databasePath))
+            {
+                Assert.Zero(context.BoundedMeasurements.Count());
+            }
+        }
     }
 }

@@ -38,7 +38,7 @@ namespace Hdd.EfData.Test
         {
             using (var context = new DatabaseContext(_databasePath))
             {
-                Assert.AreEqual(528, context.Features.Count());
+                Assert.AreEqual(544, context.Features.Count());
             }
         }
 
@@ -47,7 +47,16 @@ namespace Hdd.EfData.Test
         {
             using (var context = new DatabaseContext(_databasePath))
             {
-                Assert.AreEqual(5267, context.Measurements.Count());
+                Assert.AreEqual(9014, context.Measurements.Count());
+            }
+        }
+
+        [Test]
+        public void DatabaseContext_Measurements_NotBoundedMeasurements_HasExpectedCount()
+        {
+            using (var context = new DatabaseContext(_databasePath))
+            {
+                Assert.AreEqual(1522, context.Measurements.Count() - context.BoundedMeasurements.Count());
             }
         }
 
@@ -56,7 +65,7 @@ namespace Hdd.EfData.Test
         {
             using (var context = new DatabaseContext(_databasePath))
             {
-                Assert.Zero(context.BoundedMeasurements.Count());
+                Assert.AreEqual(7492, context.BoundedMeasurements.Count());
             }
         }
     }

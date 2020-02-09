@@ -35,9 +35,10 @@ namespace Hdd.EfData
 
             modelBuilder.Entity<Measurement>().HasKey(measurement => measurement.Id);
             modelBuilder.Entity<Measurement>().Property(measurement => measurement.Id).IsRequired();
+            modelBuilder.Entity<Measurement>().Property(measurement => measurement.Instance).IsRequired();
             modelBuilder.Entity<Measurement>().Property(measurement => measurement.MeasurementType).IsRequired();
             modelBuilder.Entity<Measurement>().Property(measurement => measurement.Timestamp).IsRequired();
-            modelBuilder.Entity<Measurement>().Property(measurement => measurement.Instance).IsRequired();
+            modelBuilder.Entity<Measurement>().Property(measurement => measurement.RemeasureInstance).IsRequired();
             modelBuilder.Entity<Measurement>().Property(measurement => measurement.Actual).IsRequired();
             modelBuilder.Entity<Measurement>().Property(measurement => measurement.Nominal).IsRequired();
 

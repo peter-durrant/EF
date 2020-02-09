@@ -2,9 +2,9 @@
 {
     public enum Status
     {
+        None,
         Pass,
         Warn,
-        Fail,
-        Error
+        Fail
     }
 }
